@@ -11,11 +11,11 @@ from forward_propagation import linear_activation_forward
 from compute_cost import compute_cost
 from backward_propagation import linear_activation_backward
 from update_parameters import update_parameters
+from predict import predict
 
-def two_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False):
+def build_model(X_train, Y_train, X_test, Y_test, layers_dims, learning_rate=0.0075, num_iterations=3000, print_cost=False):
     grads = {}
     costs = []
-    m = X.shape[1]
     (n_x, n_h, n_y) = layers_dims
     
     parameters = initialize_parameters(n_x, n_h, n_y)    
@@ -23,14 +23,15 @@ def two_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000
     b1 = parameters["b1"]
     W2 = parameters["W2"]
     b2 = parameters["b2"]
-    
+
+    #Trainset
     for i in range(0, num_iterations):
-        A1, cache1 = linear_activation_forward(X, W1, b1, activation = "relu")
+        A1, cache1 = linear_activation_forward(X_train, W1, b1, activation = "relu")
         A2, cache2 = linear_activation_forward(A1, W2, b2, activation= "sigmoid")
        
-        cost = compute_cost(A2, Y)
+        cost = compute_cost(A2, Y_train)
         
-        dA2 = -(np.divide(Y, A2) - np.divide(1-Y, 1-A2))
+        dA2 = -(np.divide(Y_train, A2) - np.divide(1-Y_train, 1-A2))
         
         dA1, dW2, db2 = linear_activation_backward(dA2, cache2, activation="sigmoid")
         dA0, dW1, db1 = linear_activation_backward(dA1, cache1, activation = "relu")
@@ -51,5 +52,19 @@ def two_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000
             print("Cost after iteration {}: {}".format(i, np.squeeze(cost)))
         if i % 100 == 0:
             costs.append(cost)
+
+    Y_prediction_train = predict(X_train, parameters)
+    Y_prediction_test = predict(X_test, parameters)
+
+    if print_cost:
+        print("train accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction_train - Y_train)) * 100))
+        print("test accuracy: {} %".format(100 - np.mean(np.abs(Y_prediction_test - Y_test)) * 100))
+
+    d = {"costs": costs,
+         "parameters": parameters,
+         "Y_prediction_train": Y_prediction_train, 
+         "Y_prediction_test" : Y_prediction_test, 
+         "learning_rate" : learning_rate,
+         "num_iterations": num_iterations}    
         
-    return parameters, costs
+    return d

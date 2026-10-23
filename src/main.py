@@ -1,5 +1,5 @@
 import numpy as np
-from two_layer_model import two_layer_model
+from build_model import build_model
 
 def main():
     train_set_x_orig = np.load('./data/train_dogvnondog/train_set_x.npy')
@@ -30,8 +30,7 @@ def main():
     layers_dims=(n_x, n_h, n_y)
     learning_rate=0.0075
     num_iterations=300
-    parameters, costs = two_layer_model(train_set_x, train_y, layers_dims=layers_dims, learning_rate=learning_rate, num_iterations=num_iterations, print_cost=True)
-    #print("Cost after first iteration: " + str(costs[0]))
+    two_layer_model = build_model(train_set_x, train_y, test_set_x, test_y, layers_dims=layers_dims, learning_rate=learning_rate, num_iterations=num_iterations, print_cost=True)
 
 if __name__ == "__main__":
     main()
