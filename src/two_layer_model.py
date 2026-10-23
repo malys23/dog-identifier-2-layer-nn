@@ -39,7 +39,7 @@ def two_layer_model(X, Y, layers_dims, learning_rate=0.0075, num_iterations=3000
         grads['db1'] = db1
         grads['dW2'] = dW2
         grads['db2'] = db2
-        
+
         parameters = update_parameters(parameters, grads, learning_rate)
         
         W1 = parameters["W1"]

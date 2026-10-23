@@ -2,11 +2,11 @@ import numpy as np
 from two_layer_model import two_layer_model
 
 def main():
-    train_set_x_orig = np.load('train_dogvnondog/train_set_x.npy')
-    train_set_y = np.load('train_dogvnondog/train_set_y.npy')
-    test_set_x_orig = np.load('test_dogvnondog/test_set_x.npy')
-    test_set_y = np.load('test_dogvnondog/test_set_y.npy')
-    classes = np.load('train_dogvnondog/list_classes.npy')
+    train_set_x_orig = np.load('./data/train_dogvnondog/train_set_x.npy')
+    train_set_y = np.load('./data/train_dogvnondog/train_set_y.npy')
+    test_set_x_orig = np.load('./data/test_dogvnondog/test_set_x.npy')
+    test_set_y = np.load('./data/test_dogvnondog/test_set_y.npy')
+    classes = np.load('./data/train_dogvnondog/list_classes.npy')
 
     #1: Resizing and find values for m_train, m_test, and num_px
     m_train = train_set_x_orig.shape[0]
@@ -29,10 +29,9 @@ def main():
     n_y = 1
     layers_dims=(n_x, n_h, n_y)
     learning_rate=0.0075
-    num_iterations=2
-    parameters, costs = two_layer_model(train_set_x, train_set_y, layers_dims=(n_x, n_h, n_y), learning_rate=0.0075, num_iterations=2, print_cost=False)
-    print("Cost after first iteration: " + str(costs[0]))
-
+    num_iterations=300
+    parameters, costs = two_layer_model(train_set_x, train_y, layers_dims=layers_dims, learning_rate=learning_rate, num_iterations=num_iterations, print_cost=True)
+    #print("Cost after first iteration: " + str(costs[0]))
 
 if __name__ == "__main__":
     main()

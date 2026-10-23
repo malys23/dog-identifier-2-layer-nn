@@ -12,8 +12,8 @@ from nn_functions import sigmoid_backward, relu_backward
 def linear_backward(dZ, cache):
     A_prev, W, b = cache
     m = A_prev.shape[1]
-    dW = np.dot((1/m) * dZ, A_prev.T)
-    db = (1/m) * np.dot(W.T, dZ)
+    dW = (1/m) * np.dot(dZ, A_prev.T)
+    db = (1/m) * np.sum(dZ, axis=1, keepdims=True)
     dA_prev = np.dot(W.T, dZ)
     return dA_prev, dW, db
 
